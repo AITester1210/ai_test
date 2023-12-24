@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<!-- 조코딩님 영상을 보며 혼자 따라서 만든 사이트입니다. 항상 좋은 강의 제공해주셔서 감사합니다. 조코딩 화이팅!! -->
+<html>
+    <head>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+        />
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-distance">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">AI 테스트</a>
+                <button
+                    class="navbar-toggler collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav"
+                    aria-controls="navbarNav"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#"
+                                >외모 유형 테스트</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">준비중..</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">준비중..</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" aria-disabled="true">비활성</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <section class="section">
+            <h1 class="title">인공지능 외모 유형 테스트</h1>
+            <h2 class="subtitle">난 이성에게 어떻게 보일까?</h2>
+            <p>성별을 선택하세요</p>
+            <div class="container gender-toggle">
+                <input type="hidden" value="0" required />
+                <div class="gender-toggle-slider"></div>
+                <div class="gender-toggle-female"></div>
+                <div class="gender-toggle-male"></div>
+            </div>
+        </section>
+        <!-- Upload  -->
+        <div class="container file-upload-form-wrap">
+            <form id="file-upload-form" class="uploader">
+                <input id="file-upload" type="file" name="fileUpload" accept="image/*" />
+
+                <label for="file-upload" id="file-drag">
+                    <img id="file-image" src="#" alt="Preview" class="hidden" />
+                    <div id="start">
+                        <i class="fa fa-download" aria-hidden="true"></i>
+                        <div class="upload-text">
+                            <img
+                                class="mt-5"
+                                src="./image/upload.png"
+                                alt="업로드 사진"
+                                width="20%"
+                                height="20%"
+                            /><br />
+                            여기에서 파일을 선택하거나<br />
+                            드래그하세요
+                        </div>
+                        <div id="notimage" class="hidden">이미지를 선택해주세요</div>
+                    </div>
+                    <div id="response" class="hidden">
+                        <div id="messages"></div>
+                        <pre id="result-message"></pre>
+                        <pre id="result-message-celeb"></pre>
+                        <div id="label-container"></div>
+                        <progress class="progress" id="file-progress" value="0">
+                            <span>0</span>%
+                        </progress>
+                    </div>
+                </label>
+            </form>
+        </div>
+        <section class="email">
+            <div class="container email-cover d-flex flex-row-reverse">
+                <img
+                    src="./image/email.png"
+                    alt="이메일 사진"
+                    class="icon"
+                    width="3%"
+                    height="2%"
+                />
+                <p class="email-address">개발자 메일: aitest1210@gmail.com</p>
+            </div>
+        </section>
+        <div id="disqus_thread"></div>
+        <script>
+            /**
+             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+            /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+            (function () {
+                // DON'T EDIT BELOW THIS LINE
+                var d = document,
+                    s = d.createElement('script');
+                s.src = 'https://parkethan.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript
+            >Please enable JavaScript to view the
+            <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript
+        >
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            var URLmachine;
+            const Gender = {
+                FEMALE: 0,
+                MALE: 1,
+            };
+
+            /**
+             * Gender Toggle Class
+             */
+            class GenderToggle {
+                constructor(element) {
+                    this._element = element;
+                    this._input = element.querySelector('input');
+                    this._currentGender = 0;
+
+                    this._initialize();
+                }
+
+                _initialize() {
+                    switch (parseInt(this._input.value)) {
+                        case Gender.FEMALE:
+                            this._setFemale();
+                            break;
+                        case Gender.MALE:
+                            this._setMale();
+                            break;
+                    }
+
+                    this._bindEventListeners();
+                }
+
+                _bindEventListeners() {
+                    this._element.addEventListener('click', () => {
+                        this._toggle();
+                    });
+                }
+
+                _toggle() {
+                    if (this._currentGender === Gender.FEMALE) {
+                        this._setMale();
+                    } else {
+                        this._setFemale();
+                    }
+                }
+
+                _setFemale() {
+                    this._element.classList.remove('male');
+                    this._element.classList.add('female');
+                    this._input.value = Gender.FEMALE;
+                    this._currentGender = Gender.FEMALE;
+                    URLmachine = 'https://teachablemachine.withgoogle.com/models/gJ8yRAu6F/';
+                }
+
+                _setMale() {
+                    this._element.classList.remove('female');
+                    this._element.classList.add('male');
+                    this._input.value = Gender.MALE;
+                    this._currentGender = Gender.MALE;
+                    URLmachine = 'https://teachablemachine.withgoogle.com/models/rWJ1TkYwy/';
+                }
+            }
+
+            document.querySelectorAll('.gender-toggle').forEach((element) => {
+                new GenderToggle(element);
+            });
+        </script>
+        <script>
+            // File Upload
+            //
+            function ekUpload() {
+                function Init() {
+                    console.log('Upload Initialised');
+
+                    var fileSelect = document.getElementById('file-upload'),
+                        fileDrag = document.getElementById('file-drag'),
+                        submitButton = document.getElementById('submit-button');
+
+                    fileSelect.addEventListener('change', fileSelectHandler, false);
+
+                    // Is XHR2 available?
+                    var xhr = new XMLHttpRequest();
+                    if (xhr.upload) {
+                        // File Drop
+                        fileDrag.addEventListener('dragover', fileDragHover, false);
+                        fileDrag.addEventListener('dragleave', fileDragHover, false);
+                        fileDrag.addEventListener('drop', fileSelectHandler, false);
+                    }
+                }
+
+                function fileDragHover(e) {
+                    var fileDrag = document.getElementById('file-drag');
+
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    fileDrag.className = e.type === 'dragover' ? 'hover' : 'modal-body file-upload';
+                }
+
+                function fileSelectHandler(e) {
+                    // Fetch FileList object
+                    var files = e.target.files || e.dataTransfer.files;
+
+                    // Cancel event and hover styling
+                    fileDragHover(e);
+
+                    // Process all File objects
+                    for (var i = 0, f; (f = files[i]); i++) {
+                        parseFile(f);
+                        uploadFile(f);
+                    }
+                }
+
+                // Output
+                function output(msg) {
+                    // Response
+                    var m = document.getElementById('messages');
+                    m.innerHTML =
+                        '<div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>';
+                    document.getElementById('result-message').innerHTML = '';
+                    document.getElementById('result-message-celeb').innerHTML = '';
+                    document.getElementById('label-container').innerHTML = '';
+                    init().then(() => {
+                        predict();
+                    });
+                }
+
+                function parseFile(file) {
+                    console.log(file.name);
+                    output('<strong>' + encodeURI(file.name) + '</strong>');
+
+                    // var fileType = file.type;
+                    // console.log(fileType);
+                    var imageName = file.name;
+
+                    var isGood = /\.(?=gif|jpg|png|jpeg)/gi.test(imageName);
+                    if (isGood) {
+                        document.getElementById('start').classList.add('hidden');
+                        document.getElementById('response').classList.remove('hidden');
+                        document.getElementById('notimage').classList.add('hidden');
+                        // Thumbnail Preview
+                        document.getElementById('file-image').classList.remove('hidden');
+                        document.getElementById('file-image').src =
+                            window.URL.createObjectURL(file);
+                        console.log(URL.createObjectURL(file));
+                    } else {
+                        document.getElementById('file-image').classList.add('hidden');
+                        document.getElementById('notimage').classList.remove('hidden');
+                        document.getElementById('start').classList.remove('hidden');
+                        document.getElementById('response').classList.add('hidden');
+                        document.getElementById('file-upload-form').reset();
+                    }
+                }
+
+                function setProgressMaxValue(e) {
+                    var pBar = document.getElementById('file-progress');
+
+                    if (e.lengthComputable) {
+                        pBar.max = e.total;
+                    }
+                }
+
+                function updateFileProgress(e) {
+                    var pBar = document.getElementById('file-progress');
+
+                    if (e.lengthComputable) {
+                        pBar.value = e.loaded;
+                    }
+                }
+
+                function uploadFile(file) {
+                    var xhr = new XMLHttpRequest(),
+                        fileInput = document.getElementById('class-roster-file'),
+                        pBar = document.getElementById('file-progress'),
+                        fileSizeLimit = 1024; // In MB
+                    if (xhr.upload) {
+                        // Check if file is less than x MB
+                        if (file.size <= fileSizeLimit * 1024 * 1024) {
+                            // Progress bar
+                            pBar.style.display = 'inline';
+                            xhr.upload.addEventListener('loadstart', setProgressMaxValue, false);
+                            xhr.upload.addEventListener('progress', updateFileProgress, false);
+
+                            // File received / failed
+                            xhr.onreadystatechange = function (e) {
+                                if (xhr.readyState == 4) {
+                                    // Everything is good!
+                                    // progress.className = (xhr.status == 200 ? "success" : "failure");
+                                    // document.location.reload(true);
+                                }
+                            };
+
+                            // Start upload
+                            xhr.open(
+                                'POST',
+                                document.getElementById('file-upload-form').action,
+                                true
+                            );
+                            xhr.setRequestHeader('X-File-Name', file.name);
+                            xhr.setRequestHeader('X-File-Size', file.size);
+                            xhr.setRequestHeader('Content-Type', 'multipart/form-data');
+                            xhr.send(file);
+                        } else {
+                            output('Please upload a smaller file (< ' + fileSizeLimit + ' MB).');
+                        }
+                    }
+                }
+
+                // Check for the various File API support.
+                if (window.File && window.FileList && window.FileReader) {
+                    Init();
+                } else {
+                    document.getElementById('file-drag').style.display = 'none';
+                }
+            }
+            ekUpload();
+        </script>
+        <script type="text/javascript">
+            // More API functions here:
+            // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
+            // the link to your model provided by Teachable Machine export panel
+            
+            let model, webcam, labelContainer, maxPredictions;
+
+            // Load the image model and setup the webcam
+            async function init() {
+                console.log(URLmachine);
+                var modelURL = URLmachine + 'model.json';
+                var metadataURL = URLmachine + 'metadata.json';
+
+                // load the model and metadata
+                // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+                // or files from your local hard drive
+                // Note: the pose library adds "tmImage" object to your window (window.tmImage)
+                model = await tmImage.load(modelURL, metadataURL);
+                maxPredictions = model.getTotalClasses();
+                labelContainer = document.getElementById('label-container');
+                for (let i = 0; i < maxPredictions; i++) {
+                    // and class labels
+                    labelContainer.appendChild(document.createElement('div'));
+                }
+            }
+
+            // run the webcam image through the image model
+            async function predict() {
+                // predict can take in an image, video or canvas html element
+                var image = document.getElementById('file-image');
+                const prediction = await model.predict(image, false);
+                prediction.sort((a, b) => parseFloat(b.probability) - parseFloat(a.probability));
+                var resultMessage;
+                var resultMessageCeleb;
+                var resultMessageCelebColor;
+                switch (prediction[0].className) {
+                    case 'pure':
+                        resultMessage =
+                            '순수한 외모의 당신!\n당신은 이성들이 지켜주고\n싶어하는 작고 귀여운\n매력을 지니고 있습니다.\n+간혹 괴롭히고 싶기도 합니다.';
+                        if(URLmachine != 'https://teachablemachine.withgoogle.com/models/rWJ1TkYwy/'){
+                            resultMessageCeleb = '비슷한 여자 연예인:\n소주연(배우), 박보영, 박은빈(배우)';
+                        }
+                        else{
+                            resultMessageCeleb = '비슷한 남자 연예인:\n정국(BTS), 박보검, 임시완(배우)';
+                        }
+                        resultMessageCelebColor = "#00d8ff";
+                        break;
+                    case 'cute':
+                        resultMessage =
+                            '푸근한 외모의 당신!\n당신의 따뜻한 미소와\n솜뭉치를 떠올리게 하는\n부드러운 외모는 이성들의\n심신안정제 입니다.';
+                        if(URLmachine != 'https://teachablemachine.withgoogle.com/models/rWJ1TkYwy/'){
+                            resultMessageCeleb = '비슷한 여자 연예인:\n신세경, 신혜선(배우), 김지원(배우)';
+                        }
+                        else{
+                            resultMessageCeleb = '비슷한 남자 연예인:\n고창석(배우), 김대명(배우), 안재홍(배우)';
+                        }
+                        resultMessageCelebColor = "#1ddb16";
+                        break;
+                    case 'friend':
+                        resultMessage =
+                            '친구같은 외모의 당신!\n이성들은 당신과 함께\n장난치며 함께하는 시간을\n정말 즐거워합니다.\n+몰래 좋아하고 있을지도 모릅니다..';
+                        if(URLmachine != 'https://teachablemachine.withgoogle.com/models/rWJ1TkYwy/'){
+                            resultMessageCeleb = '비슷한 여자 연예인:\n안유진(IVE), 아이유, 김세정';
+                        }
+                        else{
+                            resultMessageCeleb = '비슷한 남자 연예인:\n류준열, 손석구, 조승우(배우)';
+                        }
+                        resultMessageCelebColor = "#ffe400";
+                        break;
+                    case 'cool':
+                        resultMessage =
+                            '성숙한 외모의 당신!\n신뢰와 책임감이 가득한\n당신의 모습에\n낯설고 힘든 상황에서\n이성들은 당신에게\n가장 먼저 의지합니다.';
+                        if(URLmachine != 'https://teachablemachine.withgoogle.com/models/rWJ1TkYwy/'){
+                            resultMessageCeleb = '비슷한 여자 연예인:\n임수향(배우), 전지현, 손예진';
+                        }
+                        else{
+                            resultMessageCeleb = '비슷한 남자 연예인:\n원빈, 현빈, 천정명(배우)';
+                        }
+                        resultMessageCelebColor = "#0054ff";
+                        break;
+                    case 'sharp':
+                        resultMessage =
+                            '날카로운 외모의 당신!\n겉으로 보기엔 예민하고\n비밀스러운 고양이처럼 보이지만\n오히려 그러한 점이\n이성들의 호기심을 자극합니다.';
+                        if(URLmachine != 'https://teachablemachine.withgoogle.com/models/rWJ1TkYwy/'){
+                            resultMessageCeleb = '비슷한 여자 연예인:\n장원영(IVE), 임지연(배우), 아이린(레드벨벳)';
+                        }
+                        else{
+                            resultMessageCeleb = '비슷한 남자 연예인:\nGD, 이정현(배우), 이준기(배우)';
+                        }
+                        resultMessageCelebColor = "#5f00ff";
+                        break;
+                }
+                document.getElementById('result-message').innerHTML = resultMessage;
+                document.getElementById('result-message-celeb').innerHTML = resultMessageCeleb;
+                document.getElementById('result-message-celeb').style.color = resultMessageCelebColor;
+                for (let i = 0; i < maxPredictions; i++) {
+                    var classNameToKorean;
+                    var addColorClassName;
+                    switch (prediction[i].className) {
+                        case 'pure':
+                            classNameToKorean = '순수함';
+                            addColorClassName = 'skyblue';
+                            break;
+                        case 'cute':
+                            classNameToKorean = '푸근함';
+                            addColorClassName = 'green';
+                            break;
+                        case 'friend':
+                            classNameToKorean = '친구같음';
+                            addColorClassName = 'yellow';
+                            break;
+                        case 'cool':
+                            classNameToKorean = '성숙함';
+                            addColorClassName = 'blue';
+                            break;
+                        case 'sharp':
+                            classNameToKorean = '날카로움';
+                            addColorClassName = 'purple';
+                            break;
+                    }
+                    const classPrediction =
+                        '<div class="d-flex flex-row-reverse">' +
+                        '<div class="bar-frame d-flex flex-row mb-3"><div class="bar"><p class="percent"></p></div></div>' +
+                        '<div class="toKorean">' +
+                        classNameToKorean +
+                        '</div></div>';
+                    labelContainer.childNodes[i].innerHTML = classPrediction;
+                    labelContainer.childNodes[i]
+                        .getElementsByClassName('bar-frame')[0]
+                        .classList.add(addColorClassName);
+                    labelContainer.childNodes[i]
+                        .getElementsByClassName('bar')[0]
+                        .classList.add(addColorClassName);
+                    labelContainer.childNodes[i].getElementsByClassName('bar')[0].style.width =
+                        (prediction[i].probability.toFixed(2) * 100).toString() + '%';
+                    labelContainer.childNodes[i].getElementsByClassName('percent')[0].innerHTML =
+                        (prediction[i].probability.toFixed(2) * 100).toString() + '%';
+                    var m = document.getElementById('messages');
+                    m.innerHTML = '✅';
+                }
+            }
+        </script>
+    </body>
+</html>
+<!-- Copyright (c) 2023 by Matt  (https://codepen.io/uixmat/pen/yadZXv)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+ -->
+<!-- Copyright (c) 2023 by Marvin Rudolph (https://codepen.io/MarvinRudolph/pen/MPaVmL)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+ -->
