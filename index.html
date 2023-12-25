@@ -11,7 +11,10 @@
         />
         <link rel="stylesheet" href="style.css" />
         <meta name="naver-site-verification" content="fba90088f01035de21abbe9ad7aeb3046811dd99" />
-        <meta name="google-site-verification" content="jTWwdsid1V1RMZQXAK2V9oRIRNNcrifydLvHALNs47Y" />
+        <meta
+            name="google-site-verification"
+            content="jTWwdsid1V1RMZQXAK2V9oRIRNNcrifydLvHALNs47Y"
+        />
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-distance">
@@ -105,6 +108,22 @@
                 />
                 <p class="email-address">개발자 메일: aitest1210@gmail.com</p>
             </div>
+        </section>
+        <section class="footer container">
+            <p style="font-size: 0.7rem;">&copy; Edev 2023. All Rights Reserved.</p>
+            <p style="font-size: 0.5rem;">도움: 조코딩 jocoding</p>
+            <ins
+                class="kakao_ad_area"
+                style="display: none"
+                data-ad-unit="DAN-5kiSHZhcgWvAYShp"
+                data-ad-width="320"
+                data-ad-height="50"
+            ></ins>
+            <script
+                type="text/javascript"
+                src="//t1.daumcdn.net/kas/static/ba.min.js"
+                async
+            ></script>
         </section>
         <div id="disqus_thread"></div>
         <script>
@@ -363,7 +382,7 @@
             // More API functions here:
             // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
             // the link to your model provided by Teachable Machine export panel
-            
+
             let model, webcam, labelContainer, maxPredictions;
 
             // Load the image model and setup the webcam
@@ -398,62 +417,81 @@
                     case 'pure':
                         resultMessage =
                             '순수한 외모의 당신!\n당신은 이성들이 지켜주고\n싶어하는 작고 귀여운\n매력을 지니고 있습니다.\n+간혹 괴롭히고 싶기도 합니다.';
-                        if(URLmachine != 'https://teachablemachine.withgoogle.com/models/rWJ1TkYwy/'){
-                            resultMessageCeleb = '비슷한 여자 연예인:\n소주연(배우), 박보영, 박은빈(배우)';
+                        if (
+                            URLmachine !=
+                            'https://teachablemachine.withgoogle.com/models/rWJ1TkYwy/'
+                        ) {
+                            resultMessageCeleb =
+                                '비슷한 여자 연예인:\n소주연(배우), 박보영, 박은빈(배우)';
+                        } else {
+                            resultMessageCeleb =
+                                '비슷한 남자 연예인:\n정국(BTS), 박보검, 임시완(배우)';
                         }
-                        else{
-                            resultMessageCeleb = '비슷한 남자 연예인:\n정국(BTS), 박보검, 임시완(배우)';
-                        }
-                        resultMessageCelebColor = "#00d8ff";
+                        resultMessageCelebColor = '#00d8ff';
                         break;
                     case 'cute':
                         resultMessage =
                             '푸근한 외모의 당신!\n당신의 따뜻한 미소와\n솜뭉치를 떠올리게 하는\n부드러운 외모는 이성들의\n심신안정제 입니다.';
-                        if(URLmachine != 'https://teachablemachine.withgoogle.com/models/rWJ1TkYwy/'){
-                            resultMessageCeleb = '비슷한 여자 연예인:\n신세경, 신혜선(배우), 김지원(배우)';
+                        if (
+                            URLmachine !=
+                            'https://teachablemachine.withgoogle.com/models/rWJ1TkYwy/'
+                        ) {
+                            resultMessageCeleb =
+                                '비슷한 여자 연예인:\n신세경, 신혜선(배우), 김지원(배우)';
+                        } else {
+                            resultMessageCeleb =
+                                '비슷한 남자 연예인:\n고창석(배우), 김대명(배우), 안재홍(배우)';
                         }
-                        else{
-                            resultMessageCeleb = '비슷한 남자 연예인:\n고창석(배우), 김대명(배우), 안재홍(배우)';
-                        }
-                        resultMessageCelebColor = "#1ddb16";
+                        resultMessageCelebColor = '#1ddb16';
                         break;
                     case 'friend':
                         resultMessage =
                             '친구같은 외모의 당신!\n이성들은 당신과 함께\n장난치며 함께하는 시간을\n정말 즐거워합니다.\n+몰래 좋아하고 있을지도 모릅니다..';
-                        if(URLmachine != 'https://teachablemachine.withgoogle.com/models/rWJ1TkYwy/'){
+                        if (
+                            URLmachine !=
+                            'https://teachablemachine.withgoogle.com/models/rWJ1TkYwy/'
+                        ) {
                             resultMessageCeleb = '비슷한 여자 연예인:\n안유진(IVE), 아이유, 김세정';
+                        } else {
+                            resultMessageCeleb =
+                                '비슷한 남자 연예인:\n류준열, 손석구, 조승우(배우)';
                         }
-                        else{
-                            resultMessageCeleb = '비슷한 남자 연예인:\n류준열, 손석구, 조승우(배우)';
-                        }
-                        resultMessageCelebColor = "#ffe400";
+                        resultMessageCelebColor = '#ffe400';
                         break;
                     case 'cool':
                         resultMessage =
                             '성숙한 외모의 당신!\n신뢰와 책임감이 가득한\n당신의 모습에\n낯설고 힘든 상황에서\n이성들은 당신에게\n가장 먼저 의지합니다.';
-                        if(URLmachine != 'https://teachablemachine.withgoogle.com/models/rWJ1TkYwy/'){
-                            resultMessageCeleb = '비슷한 여자 연예인:\n임수향(배우), 전지현, 손예진';
-                        }
-                        else{
+                        if (
+                            URLmachine !=
+                            'https://teachablemachine.withgoogle.com/models/rWJ1TkYwy/'
+                        ) {
+                            resultMessageCeleb =
+                                '비슷한 여자 연예인:\n임수향(배우), 전지현, 손예진';
+                        } else {
                             resultMessageCeleb = '비슷한 남자 연예인:\n원빈, 현빈, 천정명(배우)';
                         }
-                        resultMessageCelebColor = "#0054ff";
+                        resultMessageCelebColor = '#0054ff';
                         break;
                     case 'sharp':
                         resultMessage =
                             '날카로운 외모의 당신!\n겉으로 보기엔 예민하고\n비밀스러운 고양이처럼 보이지만\n오히려 그러한 점이\n이성들의 호기심을 자극합니다.';
-                        if(URLmachine != 'https://teachablemachine.withgoogle.com/models/rWJ1TkYwy/'){
-                            resultMessageCeleb = '비슷한 여자 연예인:\n장원영(IVE), 임지연(배우), 아이린(레드벨벳)';
+                        if (
+                            URLmachine !=
+                            'https://teachablemachine.withgoogle.com/models/rWJ1TkYwy/'
+                        ) {
+                            resultMessageCeleb =
+                                '비슷한 여자 연예인:\n장원영(IVE), 임지연(배우), 아이린(레드벨벳)';
+                        } else {
+                            resultMessageCeleb =
+                                '비슷한 남자 연예인:\nGD, 이정현(배우), 이준기(배우)';
                         }
-                        else{
-                            resultMessageCeleb = '비슷한 남자 연예인:\nGD, 이정현(배우), 이준기(배우)';
-                        }
-                        resultMessageCelebColor = "#5f00ff";
+                        resultMessageCelebColor = '#5f00ff';
                         break;
                 }
                 document.getElementById('result-message').innerHTML = resultMessage;
                 document.getElementById('result-message-celeb').innerHTML = resultMessageCeleb;
-                document.getElementById('result-message-celeb').style.color = resultMessageCelebColor;
+                document.getElementById('result-message-celeb').style.color =
+                    resultMessageCelebColor;
                 for (let i = 0; i < maxPredictions; i++) {
                     var classNameToKorean;
                     var addColorClassName;

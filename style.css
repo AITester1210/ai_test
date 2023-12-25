@@ -414,3 +414,6 @@ div#label-container {
     background: var(--blue);
     transition-delay: calc(var(--anim-dur) / 2);
 }
+.footer {
+    
+}
