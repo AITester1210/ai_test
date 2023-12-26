@@ -21,7 +21,7 @@ body,
 * {
     font-family: 'maplestory-light';
     box-sizing: border-box;
-    font-size: 24px;
+    font-size: 32px;
 }
 html,
 body {
@@ -415,5 +415,5 @@ div#label-container {
     transition-delay: calc(var(--anim-dur) / 2);
 }
 .footer {
-    
+    padding-bottom: 5rem;
 }
